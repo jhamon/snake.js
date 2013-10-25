@@ -1,0 +1,27 @@
+body {
+	font-family: Helvetica, sans-serif;
+}
+
+.container {
+	display: table;
+	width: 600px;
+	height: 600px;
+	padding: 1px;
+	background-color: #333;
+}
+
+.tile {
+	float: left;
+	width: 28px;
+	margin: 1px;
+	height: 28px;
+	background-color: #ddd;
+}
+
+.snake {
+  background-color: green;
+}
+
+.apple {
+  background-color: red;
+}
