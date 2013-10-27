@@ -49,7 +49,6 @@
     for (var i = 0; i < this.apples.length; i++) {
       if (this.snake.isCollidedWith(this.apples[i])) {
         applesToDelete.push(i);
-        console.log("Hi");
       }
     }
 
