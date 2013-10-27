@@ -1,3 +1,5 @@
+console.log("Think this is cool? Get in touch at jhamon@gmail.com");
+
 (function () {
   var SnakeGame = window.SnakeGame = (window.SnakeGame || {});
 
@@ -23,6 +25,8 @@
     }
   }
 
+  $(".reset").on("click", start)
+
   window.onresize = adjustCSS;
 
   var start = View.prototype.start = function () {
@@ -38,13 +42,28 @@
       that.board.turn(event.keyCode);
     });
 
+    var taunts = ["My grandmother could do better than that.",
+                  "If at first you don't succeed...",
+                  "Are you even trying?",
+                  "It works better if you don't crash."];
+
+    var congratulations = ["Nicely done.", "You rock."]
+
     var that = this;
-    window.setInterval(function(){
+    var timer = window.setInterval(function(){
       if (!that.board.gameOver) {
         that.board.step();
         that.redraw();
       } else {
-        $('.message').text("Game Over");
+        window.clearInterval(timer);
+        $('#overlay').css("visibility", "visible")
+
+        if (that.board.score < 10) {
+          $('#overlay > div').prepend("<p>"+ _.sample(taunts) + "</p>")
+        } else {
+          $('#overlay > div').prepend("<p>"+ _.sample(congratulations) + "</p>")
+        }
+
       }
     }, 70);
   };
@@ -56,6 +75,7 @@
         $tile.attr("data-row", i);
         $tile.attr("data-col", j);
         this.$el.append($tile);
+        $('#overlay').css("visibility", "hidden")
       }
     }
   }
