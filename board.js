@@ -20,19 +20,14 @@
     }
   };
 
-  var counter = 0;
   var step = Board.prototype.step = function () {
-    counter += 1;
-    if (counter % 100 === 0) {
-      this.makeApples(5);
-    }
+    this.snake.move();
     this.checkApples();
     this.checkWall();
-    this.snake.move();
   };
 
   Board.prototype.checkWall = function() {
-    var nextHead = this.snake.head().plus(SnakeGame.Snake.MOVES[this.snake.dir]);
+    var nextHead = this.snake.nextMove();
     if (!_.contains(_.range(SnakeGame.Board.BOARD_SIZE), nextHead.xpos) ||
           !_.contains(_.range(SnakeGame.Board.BOARD_SIZE), nextHead.ypos)){
             this.gameOver = true;
@@ -44,7 +39,7 @@
 
     this.apples.forEach(function (apple, appleIdx, array) {
      if (this.snake.isCollidedWithApple(apple)) {
-        this.apples.splice(appleIdx, 1);
+        this.makeApples(2);
       }
     }, this);
   };
@@ -54,8 +49,8 @@
     this.apples = [];
 
     for (var i = 0; i < numApples; i++) {
-      var xpos = Math.floor(Math.random()*20);
-      var ypos = Math.floor(Math.random()*20);
+      var xpos = Math.floor(Math.random()*Board.BOARD_SIZE);
+      var ypos = Math.floor(Math.random()*Board.BOARD_SIZE);
       this.apples.push(new SnakeGame.Coord(xpos, ypos));
     }
   };

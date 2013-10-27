@@ -8,7 +8,7 @@
   var start = View.prototype.start = function () {
     this.setup();
     this.board = new SnakeGame.Board();
-    this.board.makeApples(5);
+    this.board.makeApples(2);
 
     var that = this;
 
