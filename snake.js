@@ -24,7 +24,10 @@
   }
 
   Snake.prototype.turn = function(direction) {
-    this.dir = direction;
+    var illegalDirs = {"N":"S", "S":"N", "E":"W", "W":"E"}
+    if (direction !== illegalDirs[this.dir]) {
+      this.dir = direction;
+    }
   }
 
   Snake.prototype.head = function() {
