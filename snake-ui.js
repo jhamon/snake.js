@@ -25,11 +25,11 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
     }
   }
 
-  $(".reset").on("click", start)
-
   window.onresize = adjustCSS;
 
   var start = View.prototype.start = function () {
+    var that = this;
+
     this.setup();
     adjustCSS();
 
@@ -42,6 +42,27 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
       that.board.turn(event.keyCode);
     });
 
+    $(".reset").on("click", function () {
+      that.board.reset();
+      toggleModal();
+    })
+
+     that.timer = window.setInterval(animate.bind(that), 70);
+  };
+
+  var animate = View.prototype.animate = function () {
+    if (!this.board.gameOver) {
+      this.board.step();
+      this.redraw();
+    } else {
+      this.gameOver();
+    }
+  }
+
+  var gameOver = View.prototype.gameOver = function () {
+    window.clearInterval(this.timer);
+    this.toggleModal();
+
     var taunts = ["My grandmother could do better than that.",
                   "If at first you don't succeed...",
                   "Are you even trying?",
@@ -49,24 +70,21 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
 
     var congratulations = ["Nicely done.", "You rock."]
 
-    var that = this;
-    var timer = window.setInterval(function(){
-      if (!that.board.gameOver) {
-        that.board.step();
-        that.redraw();
-      } else {
-        window.clearInterval(timer);
-        $('#overlay').css("visibility", "visible")
+    if (this.board.score < 10) {
+      $('#overlay > div').prepend("<p>"+ _.sample(taunts) + "</p>")
+    } else {
+      $('#overlay > div').prepend("<p>"+ _.sample(congratulations) + "</p>")
+    }
+  }
 
-        if (that.board.score < 10) {
-          $('#overlay > div').prepend("<p>"+ _.sample(taunts) + "</p>")
-        } else {
-          $('#overlay > div').prepend("<p>"+ _.sample(congratulations) + "</p>")
-        }
-
-      }
-    }, 70);
-  };
+  var toggleModal = View.prototype.toggleModal = function () {
+    var currentVal = $('#overlay').css("visibility")
+    if (currentVal === "hidden") {
+      $('#overlay').css('visibility', 'visible');
+    } else {
+      $('#overlay').css('visibility', 'hidden');
+    }
+  }
 
   var setup = View.prototype.setup = function () {
     for(var i = 0; i < SnakeGame.Board.BOARD_SIZE; i++) {
