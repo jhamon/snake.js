@@ -9,9 +9,9 @@
 
   Board.BOARD_SIZE = 20;
   Board.KEY_MAPPINGS = { "38": "N",
-                            "40": "S",
-                            "37": "W",
-                            "39": "E" };
+                         "40": "S",
+                         "37": "W",
+                         "39": "E" };
 
   var turn = Board.prototype.turn = function (keyCode) {
     var mappedKey = Board.KEY_MAPPINGS[keyCode];
@@ -28,13 +28,8 @@
     }
     this.checkApples();
     this.checkWall();
-    this.checkSelf();
     this.snake.move();
   };
-
-  Board.prototype.checkSelf = function() {
-
-  }
 
   Board.prototype.checkWall = function() {
     var nextHead = this.snake.head().plus(SnakeGame.Snake.MOVES[this.snake.dir]);
@@ -46,19 +41,16 @@
 
   Board.prototype.checkApples = function() {
     var applesToDelete = [];
-    for (var i = 0; i < this.apples.length; i++) {
-      if (this.snake.isCollidedWith(this.apples[i])) {
-        applesToDelete.push(i);
-      }
-    }
 
-    for (var i = 0; i < applesToDelete.length; i++) {
-      this.apples.splice(applesToDelete[i], 1);
-    }
+    this.apples.forEach(function (apple, appleIdx, array) {
+     if (this.snake.isCollidedWithApple(apple)) {
+        this.apples.splice(appleIdx, 1);
+      }
+    }, this);
   };
 
 
-  var makeApples = Board.prototype.makeApples = function (numApples) {
+  Board.prototype.makeApples = function (numApples) {
     this.apples = [];
 
     for (var i = 0; i < numApples; i++) {
@@ -67,6 +59,5 @@
       this.apples.push(new SnakeGame.Coord(xpos, ypos));
     }
   };
-
 
 })();

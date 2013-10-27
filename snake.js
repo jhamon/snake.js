@@ -14,8 +14,7 @@
                 "W": [-1,0]}
 
   Snake.prototype.move = function () {
-    var currentHead = this.segments[0];
-    var newHead = currentHead.plus(Snake.MOVES[this.dir]);
+    var newHead = this.nextMove();
     this.segments.unshift(newHead);
 
     if (!this.appleEaten) {
@@ -32,8 +31,12 @@
     return this.segments[0];
   }
 
-  Snake.prototype.isCollidedWith = function (apple) {
-    if ((this.head().xpos === apple.xpos) && (this.head().ypos === apple.ypos)) {
+  Snake.prototype.nextMove = function() {
+    return this.head().plus(Snake.MOVES[this.dir]);
+  }
+
+  Snake.prototype.isCollidedWithApple = function (apple) {
+    if ((this.nextMove().xpos === apple.xpos) && (this.nextMove().ypos === apple.ypos)) {
       this.appleEaten = true;
       return true;
     }
