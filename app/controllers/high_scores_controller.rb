@@ -15,9 +15,11 @@ class HighScoresController < ApplicationController
   def create
     @high_score = HighScore.new(high_score_params)
     if @high_score.save
-      head => :ok
+      status :ok
+      render :json
     else
-      head => :unprocessable_entity
+      head :unprocessable_entity
+      render :json
     end
   end
 

@@ -1,28 +1,20 @@
-<h1>Listing high_scores</h1>
+<h1>High Scores</h1>
 
 <table>
   <thead>
     <tr>
+      <th>Name</th>
       <th>Score</th>
-      <th>Username</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th>Date</th>
     </tr>
   </thead>
 
   <tbody>
     <% @high_scores.each do |high_score| %>
       <tr>
-        <td><%= high_score.score %></td>
         <td><%= high_score.username %></td>
-        <td><%= link_to 'Show', high_score %></td>
-        <td><%= link_to 'Destroy', high_score, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= high_score.score %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New High score', new_high_score_path %>
