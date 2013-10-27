@@ -55,11 +55,4 @@
     }
   };
 
-  Board.prototype.reset = function () {
-    this.snake = new SnakeGame.Snake();
-    this.apples = [];
-    this.gameOver = false;
-    this.score = 0;
-  }
-
 })();
