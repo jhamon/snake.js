@@ -11,11 +11,15 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
     var width = window.innerWidth;
     var tileSize = (window.innerHeight-200)/30;
     var marginTop = (window.innerHeight - tileSize*30-60)/2
-    $('.board').css('margin', marginTop);
-    $('.board').css('width', tileSize*30+60);
-    $('.board').css('height', tileSize*30+31);
-    $('.tile').css('width', tileSize);
-    $('.tile').css('height', tileSize);
+    var $board = $('.board');
+    var $tile = $('.tile');
+    $board.css('margin-top', marginTop);
+    $board.css('margin-left', marginTop);
+    $board.css('margin-right', marginTop);
+    $board.css('width', tileSize*30+60);
+    $board.css('height', tileSize*30+31);
+    $tile.css('width', tileSize);
+    $tile.css('height', tileSize);
     $('.sidebar').css('margin-top', marginTop);
     $('.score').css('margin-top', marginTop);
     if (parseInt($('.board').css('width')) > 0.6*width) {
