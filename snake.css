@@ -71,12 +71,31 @@ a:hover {
 }
 
 #overlay div {
-     width:400px;
-     margin: 100px auto;
-     background-color: #96A387;
+     width:300px;
+     margin: 300px auto;
+     background-color: #333;
      color: #eee;
      border: 2px solid #33342d;
      padding:15px;
      text-align:center;
      z-index: 1001;
+}
+
+#overlay a {
+	color: #FFF;
+	text-transform: uppercase;
+	padding: 20px;
+	background-color: #E84F4F;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+}
+
+#overlay a:active {
+	position: relative;
+	top: 1px;
+}
+
+#overlay p {
+	padding: 10px;
 }
