@@ -24,28 +24,26 @@
   var step = Board.prototype.step = function () {
     this.checkApples();
     this.snake.move();
-    this.checkWall();
+    this.checkCollisions();
   };
 
-  Board.prototype.checkWall = function() {
-    var nextHead = this.snake.nextMove();
-    if (!_.contains(_.range(SnakeGame.Board.BOARD_SIZE), nextHead.xpos) ||
-          !_.contains(_.range(SnakeGame.Board.BOARD_SIZE), nextHead.ypos)){
-            this.gameOver = true;
+  Board.prototype.checkCollisions = function () {
+    if (this.snake.isCollidedWithSelf() ||
+        this.snake.isCollidedWithWall()) {
+      this.gameOver = true;
     }
-  };
+  }
 
   Board.prototype.checkApples = function() {
     var applesToDelete = [];
 
-    this.apples.forEach(function (apple, appleIdx, array) {
+    this.apples.forEach(function (apple, appleIdx) {
      if (this.snake.isCollidedWithApple(apple)) {
-        this.makeApples(2);
+        this.makeApples(20);
         this.score += 1;
       }
     }, this);
   };
-
 
   Board.prototype.makeApples = function (numApples) {
     this.apples = [];

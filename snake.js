@@ -41,11 +41,26 @@
 
   Snake.prototype.isCollidedWithApple = function (apple) {
     var nextMove = this.nextMove();
-    if ((nextMove.xpos === apple.xpos) && (nextMove.ypos === apple.ypos)) {
+    if (apple.isEqual(nextMove)) {
       this.appleEaten = true;
       return true;
     }
     return false;
+  }
+
+  Snake.prototype.isCollidedWithSelf = function () {
+    var nextMove = this.nextMove();
+    var hitSelf = false;
+    this.segments.forEach( function (segment, idx) {
+      if (segment.isEqual(nextMove)) {
+        hitSelf = true;
+      }
+    });
+    return hitSelf;
+  }
+
+  Snake.prototype.isCollidedWithWall = function () {
+    return !this.nextMove().isValid();
   }
 
 })();
