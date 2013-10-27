@@ -39,7 +39,8 @@
   }
 
   Snake.prototype.isCollidedWithApple = function (apple) {
-    if ((this.nextMove().xpos === apple.xpos) && (this.nextMove().ypos === apple.ypos)) {
+    var nextMove = this.nextMove();
+    if ((nextMove.xpos === apple.xpos) && (nextMove.ypos === apple.ypos)) {
       this.appleEaten = true;
       return true;
     }

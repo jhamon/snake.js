@@ -21,8 +21,8 @@
   };
 
   var step = Board.prototype.step = function () {
-    this.snake.move();
     this.checkApples();
+    this.snake.move();
     this.checkWall();
   };
 
