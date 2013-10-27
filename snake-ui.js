@@ -5,8 +5,30 @@
     this.$el = $el;
   };
 
+  var adjustCSS = function () {
+    var width = window.innerWidth;
+    var tileSize = (window.innerHeight-200)/30;
+    var marginTop = (window.innerHeight - tileSize*30-60)/2
+    $('.board').css('margin', marginTop);
+    $('.board').css('width', tileSize*30+60);
+    $('.board').css('height', tileSize*30+31);
+    $('.tile').css('width', tileSize);
+    $('.tile').css('height', tileSize);
+    $('.sidebar').css('margin-top', marginTop);
+    $('.score').css('margin-top', marginTop);
+    if (parseInt($('.board').css('width')) > 0.6*width) {
+      $('.sidebar').hide();
+    } else {
+      $('.sidebar').show();
+    }
+  }
+
+  window.onresize = adjustCSS;
+
   var start = View.prototype.start = function () {
     this.setup();
+    adjustCSS();
+
     this.board = new SnakeGame.Board();
     this.board.makeApples(2);
 
@@ -24,7 +46,7 @@
       } else {
         $('.message').text("Game Over");
       }
-    }, 100);
+    }, 70);
   };
 
   var setup = View.prototype.setup = function () {
@@ -41,6 +63,7 @@
   var redraw = View.prototype.redraw = function () {
     $(".snake").removeClass("snake");
     $(".apple").removeClass("apple");
+    $(".score").html("Score: " + this.board.score)
 
     var apples = this.board.apples;
     for (var i = 0; i < apples.length; i++) {

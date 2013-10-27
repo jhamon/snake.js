@@ -1,27 +1,57 @@
 body {
-	font-family: Helvetica, sans-serif;
+	font-family: 'Share Tech', Helvetica, sans-serif;
+	background-color: #46483e;
+	font-size: 1.25em;
+	color: #d2d8ba;
 }
 
-.container {
+::selection {
+	background: #FCA27E;
+	}
+::-moz-selection {
+	background: #FCA27E;
+}
+
+.sidebar {
+	float: left;
+	width: 350px;
+}
+
+.score {
+	font-size: 3em;
+}
+
+a {
+	color: rgb(102, 153, 0);
+	text-decoration: none;
+}
+
+a:hover {
+	background-color: rgb(102, 153, 0);
+	color: #46483e;
+}
+
+
+
+/* Game board styling */
+.board {
+	float: left;
 	display: table;
-	width: 600px;
-	height: 600px;
 	padding: 1px;
-	background-color: #333;
+	background-color: #46483e;
 }
 
 .tile {
 	float: left;
-	width: 28px;
 	margin: 1px;
-	height: 28px;
-	background-color: #ddd;
+	background-color: #ccc;
+	display: inline-block;
 }
 
 .snake {
-  background-color: green;
+  background-color: #6E9E3A;
 }
 
 .apple {
-  background-color: red;
+  background-color: #E84F4F;
 }

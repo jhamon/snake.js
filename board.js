@@ -5,9 +5,10 @@
     this.snake = new SnakeGame.Snake();
     this.apples = [];
     this.gameOver = false;
+    this.score = 0;
   };
 
-  Board.BOARD_SIZE = 20;
+  Board.BOARD_SIZE = 30;
   Board.KEY_MAPPINGS = { "38": "N",
                          "40": "S",
                          "37": "W",
@@ -40,6 +41,7 @@
     this.apples.forEach(function (apple, appleIdx, array) {
      if (this.snake.isCollidedWithApple(apple)) {
         this.makeApples(2);
+        this.score += 1;
       }
     }, this);
   };
