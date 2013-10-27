@@ -21,11 +21,12 @@
       this.segments.pop();
     }
     this.appleEaten = false;
+    this.lastDir = this.dir;
   }
 
   Snake.prototype.turn = function(direction) {
     var illegalDirs = {"N":"S", "S":"N", "E":"W", "W":"E"}
-    if (direction !== illegalDirs[this.dir]) {
+    if (direction !== illegalDirs[this.lastDir]) {
       this.dir = direction;
     }
   }
