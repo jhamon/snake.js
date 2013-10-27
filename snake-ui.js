@@ -30,11 +30,9 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
   var start = View.prototype.start = function () {
     var that = this;
 
+    this.buildBoard();
     this.setup();
     adjustCSS();
-
-    this.board = new SnakeGame.Board();
-    this.board.makeApples(2);
 
     var that = this;
 
@@ -42,15 +40,24 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
       that.board.turn(event.keyCode);
     });
 
-    $(".reset").on("click", function () {
-      that.board.reset();
-      toggleModal();
-    })
-
-     that.timer = window.setInterval(animate.bind(that), 70);
+    $(".reset").on("click", that.tryAgain.bind(that))
   };
 
-  var animate = View.prototype.animate = function () {
+
+  View.prototype.tryAgain = function () {
+      this.toggleModal();
+      window.clearInterval(this.timer)
+      this.setup();
+  }
+
+  View.prototype.setup = function () {
+    var that = this;
+    this.board = new SnakeGame.Board();
+    this.board.makeApples(2);
+    that.timer = window.setInterval(that.animate.bind(that), 70);
+  }
+
+  View.prototype.animate = function () {
     if (!this.board.gameOver) {
       this.board.step();
       this.redraw();
@@ -59,7 +66,7 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
     }
   }
 
-  var gameOver = View.prototype.gameOver = function () {
+  View.prototype.gameOver = function () {
     window.clearInterval(this.timer);
     this.toggleModal();
 
@@ -71,13 +78,13 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
     var congratulations = ["Nicely done.", "You rock."]
 
     if (this.board.score < 10) {
-      $('#overlay > div').prepend("<p>"+ _.sample(taunts) + "</p>")
+      $('#overlay .message').html(_.sample(taunts))
     } else {
-      $('#overlay > div').prepend("<p>"+ _.sample(congratulations) + "</p>")
+      $('#overlay .message').html(_.sample(congratulations))
     }
   }
 
-  var toggleModal = View.prototype.toggleModal = function () {
+  View.prototype.toggleModal = function () {
     var currentVal = $('#overlay').css("visibility")
     if (currentVal === "hidden") {
       $('#overlay').css('visibility', 'visible');
@@ -86,7 +93,7 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
     }
   }
 
-  var setup = View.prototype.setup = function () {
+  View.prototype.buildBoard = function () {
     for(var i = 0; i < SnakeGame.Board.BOARD_SIZE; i++) {
       for(var j = 0; j < SnakeGame.Board.BOARD_SIZE; j++) {
         var $tile = $("<div class='tile'></div>");
@@ -98,7 +105,7 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
     }
   }
 
-  var redraw = View.prototype.redraw = function () {
+  View.prototype.redraw = function () {
     $(".snake").removeClass("snake");
     $(".apple").removeClass("apple");
     $(".score").html("Score: " + this.board.score)
