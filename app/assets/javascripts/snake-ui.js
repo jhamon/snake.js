@@ -114,18 +114,16 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
     $(".apple").removeClass("apple");
     $(".score").html("Score: " + this.board.score)
 
-    var apples = this.board.apples;
-    for (var i = 0; i < apples.length; i++) {
-      var $appleTile = $('div[data-row='+apples[i].ypos+'][data-col='+apples[i].xpos+']');
+    this.board.apples.forEach( function(apple, idx, apples) {
+      var $appleTile = $('div[data-row='+apple.ypos+'][data-col='+apple.xpos+']');
       $appleTile.addClass('apple');
-    }
+    })
 
-    var segments = this.board.snake.segments;
-    for (var i = 0; i < segments.length; i++) {
-      var $snakeTile = $('div[data-row='+segments[i].ypos+'][data-col='+segments[i].xpos+']');
+    this.board.snake.segments.forEach( function (segment, idx, segments) {
+      var $snakeTile = $('div[data-row='+segment.ypos+'][data-col='+segment.xpos+']');
       $snakeTile.addClass('snake');
       $snakeTile.removeClass('apple');
-    }
+    });
   }
 
 
