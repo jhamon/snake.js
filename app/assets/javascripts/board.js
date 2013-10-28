@@ -39,7 +39,7 @@
 
     this.apples.forEach(function (apple, appleIdx) {
      if (this.snake.isCollidedWithApple(apple)) {
-        this.makeApples(20);
+        this.makeApples(2);
         this.score += 1;
       }
     }, this);
