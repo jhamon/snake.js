@@ -1,7 +1,7 @@
 body {
 	font-family: 'Share Tech', Helvetica, sans-serif;
 	background-color: #46483e;
-	font-size: 1.25em;
+	font-size: 1.5em;
 	color: #d2d8ba;
 }
 
@@ -59,29 +59,20 @@ a:hover {
 
 /* Modal dialog */
 
-#overlay {
-     visibility: hidden;
-     position: absolute;
-     left: 0px;
-     top: 0px;
-     width:100%;
-     height:100%;
-     text-align:center;
-     z-index: 1000;
+#gameover-box {
+ visibility: hidden;
 }
 
-#overlay div {
+#gameover-box div {
      width:300px;
-     margin: 300px auto;
      background-color: #333;
      color: #eee;
      border: 2px solid #33342d;
      padding:15px;
      text-align:center;
-     z-index: 1001;
 }
 
-#overlay a {
+#gameover-box a {
 	color: #FFF;
 	text-transform: uppercase;
 	padding: 20px;
@@ -91,11 +82,11 @@ a:hover {
 	-webkit-border-radius: 15px;
 }
 
-#overlay a:active {
+#gameover-box a:active {
 	position: relative;
 	top: 1px;
 }
 
-#overlay p {
+#gameover-box p {
 	padding: 10px;
 }

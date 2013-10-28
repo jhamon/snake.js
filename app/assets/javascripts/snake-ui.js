@@ -82,18 +82,18 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
     var congratulations = ["Nicely done.", "You rock."]
 
     if (this.board.score < 10) {
-      $('#overlay .message').html(_.sample(taunts))
+      $('#gameover-box .message').html(_.sample(taunts))
     } else {
-      $('#overlay .message').html(_.sample(congratulations))
+      $('#gameover-box .message').html(_.sample(congratulations))
     }
   }
 
   View.prototype.toggleModal = function () {
-    var currentVal = $('#overlay').css("visibility")
+    var currentVal = $('#gameover-box').css("visibility")
     if (currentVal === "hidden") {
-      $('#overlay').css('visibility', 'visible');
+      $('#gameover-box').css('visibility', 'visible');
     } else {
-      $('#overlay').css('visibility', 'hidden');
+      $('#gameover-box').css('visibility', 'hidden');
     }
   }
 
@@ -104,7 +104,7 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
         $tile.attr("data-row", i);
         $tile.attr("data-col", j);
         this.$el.append($tile);
-        $('#overlay').css("visibility", "hidden")
+        $('#gameover-box').css("visibility", "hidden")
       }
     }
   }
