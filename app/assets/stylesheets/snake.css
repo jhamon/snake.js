@@ -3,6 +3,7 @@ body {
 	background-color: #46483e;
 	font-size: 1.5em;
 	color: #d2d8ba;
+	overflow: hidden;
 }
 
 ::selection {
@@ -64,12 +65,12 @@ a:hover {
 }
 
 #gameover-box div {
-     width:300px;
-     background-color: #333;
-     color: #eee;
-     border: 2px solid #33342d;
-     padding:15px;
-     text-align:center;
+	width:300px;
+	background-color: #333;
+	color: #eee;
+	border: 2px solid #33342d;
+	padding:15px;
+	text-align:center;
 }
 
 #gameover-box a {
