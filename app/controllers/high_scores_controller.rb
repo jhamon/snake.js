@@ -6,11 +6,6 @@ class HighScoresController < ApplicationController
     respond_with(@high_scores)
   end
 
-  def new
-    @high_score = HighScore.new
-    respond_with(@high_score)
-  end
-
   def create
     @high_score = HighScore.new(high_score_params)
     respond_with(@high_score)
