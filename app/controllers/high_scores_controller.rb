@@ -1,30 +1,22 @@
 class HighScoresController < ApplicationController
-  # GET /high_scores
-  # GET /high_scores.json
+  respond_to :json
+
   def index
-    @high_scores = HighScore.all
+    @high_scores = HighScore.order(score: :desc).limit(10)
+    respond_with(@high_scores)
   end
 
-  # GET /high_scores/new
   def new
     @high_score = HighScore.new
+    respond_with(@high_score)
   end
 
-  # POST /high_scores
-  # POST /high_scores.json
   def create
     @high_score = HighScore.new(high_score_params)
-    if @high_score.save
-      status :ok
-      render :json
-    else
-      head :unprocessable_entity
-      render :json
-    end
+    respond_with(@high_score)
   end
 
   private
-    # Never trust parameters from the scary internet, only allow the white list through.
     def high_score_params
       params.require(:high_score).permit(:score, :username)
     end
