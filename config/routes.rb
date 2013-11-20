@@ -1,4 +1,4 @@
 Snakejs::Application.routes.draw do
-  resources :high_scores
-  root to: "high_scores#index"
+  resources :high_scores, :only => [:create, :index]
+  root to: "static_pages#root"
 end
