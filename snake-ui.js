@@ -1,4 +1,4 @@
-console.log("Think this is cool? Get in touch at jhamon@gmail.com");
+console.log("Think this is cool? Get in touch at jen@hamon.io");
 
 (function () {
   var SnakeGame = window.SnakeGame = (window.SnakeGame || {});
