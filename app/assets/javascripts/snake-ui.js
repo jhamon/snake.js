@@ -69,7 +69,7 @@ console.log("Think this is cool? Get in touch at jhamon@gmail.com");
   View.prototype.gameOver = function () {
     window.clearInterval(this.timer);
     this.toggleModal();
-
+    debugger;
     var taunts = ["My grandmother could do better than that.",
                   "If at first you don't succeed...",
                   "Are you even trying?",
