@@ -30,7 +30,6 @@ SnakeGame.Views.gameView = Backbone.View.extend({
   
   BOARD_SIZE: 40,
 
-
   template: JST['game_page'],
 
   remove: function() {
@@ -39,10 +38,10 @@ SnakeGame.Views.gameView = Backbone.View.extend({
       window.clearInterval(timer);
     });
 
-    // Unbind key events
+    // Unbind global key events
     this.off('keydown');
 
-    // boilerplate ganked from backbone.js
+    // Boilerplate ganked from backbone.js
     this.$el.remove();
     this.stopListening();
     return this;
@@ -52,10 +51,14 @@ SnakeGame.Views.gameView = Backbone.View.extend({
     this.$el.html(this.template());
     this.$board = this.$('.board');
 
-    this.cells.forEach( function (cell) {
+    var cellDivs = this.cells.map( function (cell) {
       var cellView = new SnakeGame.Views.cellView({model: cell});
-      this.$board.prepend(cellView.render().$el);
-    }, this);
+      return cellView.render().$el;
+    });
+
+    // jQuery will use a document fragment if you append a list of
+    // items instead of doing them individually in the for-loop.
+    this.$board.prepend(cellDivs.reverse());
 
     var scoreView = new SnakeGame.Views.scoreView({model: this.score })
     this.$('.scoreview').html(scoreView.render().$el);
