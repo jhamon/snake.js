@@ -1,13 +1,18 @@
-window.Snakejs = {
+window.SnakeGame = {
   Models: {},
   Collections: {},
   Views: {},
   Routers: {},
   initialize: function() {
-    alert('Hello from Backbone!');
+    SnakeGame.scores = new SnakeGame.Collections.highScores(bootstrappedScores);
+    SnakeGame.router = new SnakeGame.Routers.snakeRouter({
+      rootEl: '.container'
+    });
+    Backbone.history.start();
+    SnakeGame.router.navigate("#play");
   }
 };
 
 $(document).ready(function(){
-  Snakejs.initialize();
+  SnakeGame.initialize();
 });

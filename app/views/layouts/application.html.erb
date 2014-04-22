@@ -6,42 +6,20 @@
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-
-
-  <link href='http://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
 <a href="https://github.com/jhamon/snake.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 
-  <div class="board"></div>
+<div class="container">
+  <%= yield %>
+</div>
 
-  <div class="sidebar">
-      <span class="score">Score: 0</span>
-
-      <p> Snake game by Jennifer Hamon, <a href="mailto:jen@hamon.io">jen@hamon.io</a>. </p>
-
-  <div id="gameover-box">
-    <div>
-      <p class="message"></p>
-
-      <p>
-        <a href="#" class="reset">Try Again</a>
-      </p>
-    </div>
-  </div>
-
-
-  </div>
-
-<%= yield %>
-
-</body>
-
-<script type="text/javascript">
-  var view = new SnakeGame.View($('.board'));
-  view.start();
+<script type="application/javascript">
+  var bootstrappedScores = <%= HighScore.order(score: :desc).page(1).to_json.html_safe %>
+</script>
+  
 </script>
 
+</body>
 </html>
