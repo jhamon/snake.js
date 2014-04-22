@@ -1,46 +1,75 @@
 @import url(http://fonts.googleapis.com/css?family=Share+Tech);
 
+///// Palette
+
+$steel: #46483e;
+$cream: #d2d8ba;
+$pink: #E84F4F;
+$green: #6E9E3A;
+
+///// General styling
+
 body {
-	font-family: 'Share Tech', Helvetica, sans-serif;
-	background-color: #46483e;
-	font-size: 1.5em;
-	color: #d2d8ba;
-	overflow: hidden;
+  font-family: 'Share Tech', Helvetica, sans-serif;
+  background-color: $steel;
+  font-size: 1.5em;
+  color: $cream;
+  overflow: hidden;
 }
 
 ::selection {
-	background: #FCA27E;
+  background: #FCA27E;
+	background: darken($steel, 10%);
+  color: $pink;
 	}
 ::-moz-selection {
-	background: #FCA27E;
+	background: darken($steel, 10%);
+  color: $pink;
 }
 
-.sidebar {
-	float: left;
-	width: 350px;
+.h1 {
+  font-size: 2em;
+  line-height: 1;
 }
-
-.score {
-	font-size: 3em;
+.h2 {
+  font-size: 1.5em;
+  line-height: 0.75;
 }
 
 a {
-	color: rgb(102, 153, 0);
+	color: $green;
 	text-decoration: none;
 }
 
 a:hover {
-	background-color: rgb(102, 153, 0);
-	color: #46483e;
+	background-color: $green;
+	color: $steel;
 }
 
+.container {
+  // Fix-width, but you can't play a 
+  // keyboard-driven game on mobile anyway.
+  width: 562px;
+  margin: 0px auto;
+}
 
-/* Game board styling */
+//// Positioning and view-specific elements
+
+.scoreview {
+  float: right;
+}
+.postscript { 
+  clear: both;
+}
+.score {
+  font-size: 3em;
+}
+
 .board {
-	float: left;
+	// float: left;
 	display: table;
 	padding: 1px;
-	background-color: #46483e;
+	background-color: $steel;
 	width: 562px;
 }
 
@@ -62,11 +91,11 @@ a:hover {
 }
 
 .apple {
-  background-color: #E84F4F;
+  background-color: $pink;
 }
 
 .excited { 
-  color: #E84F4F;
+  color: $pink;
   font-weight: bold;
   display:inline-block;
   -o-animation: throb 0.6s infinite alternate;
@@ -111,7 +140,7 @@ a:hover {
 	color: #FFF;
 	text-transform: uppercase;
 	padding: 20px;
-	background-color: #E84F4F;
+	background-color: $pink;
 	border-radius: 15px;
 	-moz-border-radius: 15px;
 	-webkit-border-radius: 15px;
