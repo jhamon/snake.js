@@ -1,3 +1,10 @@
 SnakeGame.Models.highScore = Backbone.Model.extend({
-  url = "/high_scores"
+  info: 'model:highScore',
+
+  urlRoot: '/high_scores',
+
+  defaults: {
+    username: "Anonymous",
+    score: 0
+  }
 })
