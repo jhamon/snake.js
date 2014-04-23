@@ -1,5 +1,5 @@
-SnakeGame.Collections.apples = Backbone.Collection.extend({
-  model: SnakeGame.cell,
+SnakeGame.Collections.apples = SnakeGame.Collections.cells.extend({
+  model: SnakeGame.Models.cell,
 
   info: 'collection:apples',
 

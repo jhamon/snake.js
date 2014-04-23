@@ -6,7 +6,7 @@ SnakeGame.Collections.snakeSegments = Backbone.Collection.extend({
   initialize: function () {
     this.bind('add', this.markAsSnake, this);
     this.bind('remove', this.markAsEmpty, this);
-    this.dir = _.sample(Object.keys(this.vectors));
+    this.dir = _.sample(Object.keys(this._vectors));
   },
 
   markAsSnake: function (model) {
@@ -29,18 +29,22 @@ SnakeGame.Collections.snakeSegments = Backbone.Collection.extend({
     model.set({'status':'empty'});
   },
 
-  vectors: {
+  _vectors: {
     'N': [0, 1],
     'S': [0, -1],
     'E': [1, 0],
     'W': [-1,0]
   },
 
-  illegalDirs: {
+  _illegalDirs: {
     'N':'S', 
     'S':'N', 
     'E':'W', 
     'W':'E'
+  },
+
+  moveVector: function () {
+    return this._vectors[this.dir];
   },
 
   move: function () {
@@ -52,7 +56,7 @@ SnakeGame.Collections.snakeSegments = Backbone.Collection.extend({
   },
 
   turn: function(direction) {
-    if (direction !== this.illegalDirs[this.lastDir]) {
+    if (direction !== this._illegalDirs[this.lastDir]) {
       this.dir = direction;
     }
   },
@@ -62,8 +66,12 @@ SnakeGame.Collections.snakeSegments = Backbone.Collection.extend({
   },
 
   nextMove: function() {
-    var val = this.head().plus(this.vectors[this.dir]);
+    var val = this.head().plus(this.moveVector());
     return val;
+  },
+
+  notInDirectPath: function () {
+    return this.head().notInDirectPath(this.moveVector());
   },
 
   checkCollisions: function (next) {
@@ -79,7 +87,6 @@ SnakeGame.Collections.snakeSegments = Backbone.Collection.extend({
   },
 
   isCollidedWithWall: function (next) {
-    return next === false;
+    return next === false || next.get('status') === 'obstacle';
   }
-
 })

@@ -22,6 +22,11 @@ SnakeGame.Collections.cells = Backbone.Collection.extend({
     return _.sample(this.where({'status': 'empty'}))
   },
 
+  center: function () {
+    var middleIndex = this.size / 2 | 0;
+    return this.cellAtXY(middleIndex, middleIndex);
+  },
+
   cellAtXY: function (x,y) {
     var cell = this.findWhere({'x': x, 'y': y});
     return (Object.prototype.toString.apply(cell) === '[object Object]') 

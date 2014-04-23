@@ -1,42 +1,96 @@
-SnakeGame.Views.gameView = Backbone.View.extend({
+SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
 
   info: 'view:gameView',
 
-  initialize: function () {
-    // Only document recieves the keypresses.
-    $(document).on('keydown', this.turnSnake.bind(this));
+  className: 'page',
 
-    this.score = new Backbone.Model({ score: 0 });
-
-    this.cells = new SnakeGame.Collections.cells([], {size: this.BOARD_SIZE});  
-    this.cells.populate();
-
-    this.snake = new SnakeGame.Collections.snakeSegments(this.cells.sample());
-    this.listenTo(this.snake, 'collision', this.gameOver);
-
-    this.apples = new SnakeGame.Collections.apples();
-    this.makeApples(2);
-
-    this.listenTo(this.apples, 'appleEaten', this.updateScore);
-    this.listenTo(this.apples, 'appleEaten', this.makeApples);
-
-    // Configure repeating tasks
-    this.gametimers = [];
-    var loop = this.step.bind(this);
-    var refreshApples = this.refreshApples.bind(this);
-    this.gametimers.push(window.setInterval(loop, 50));
-    this.gametimers.push(window.setInterval(refreshApples, 10000));
-  },
-  
   BOARD_SIZE: 40,
 
   template: JST['game_page'],
 
+  initialize: function () {
+    // Unfortunately, only document recieves the keypresses.
+    $(document).on('keydown', this.turnSnake.bind(this));
+
+    // The game has several nested collections
+    this.initCollections();
+
+    // Configure repeating tasks
+    this.initTimers();
+
+    this.listenTo(this.apples, 'appleEaten', this.updateScore);
+    this.listenTo(this.apples, 'appleEaten', this.makeApples);
+    this.listenTo(this.apples, 'appleEaten', this.resetAppleCountdown);
+    this.listenTo(this.apples, 'appleEaten', this.speedUp);
+    this.listenTo(this.apples, 'appleEaten', this.addObstacles);
+    this.listenTo(this.snake,  'collision',  this.gameOver);
+  },
+
+  initCollections: function () {
+    // Cells represent the different squares of the gameboard.
+    this.cells = new SnakeGame.Collections.cells([], {size: this.BOARD_SIZE});  
+    this.cells.populate();
+
+    // Snake, apples and obstacles are special subsets of the cells collection.
+    // Breaking them into their own collection classes makes it easier to trigger
+    // the necessary actions.
+    this.snake = new SnakeGame.Collections.snakeSegments(this.cells.center());
+    this.apples = new SnakeGame.Collections.apples();
+    this.makeApples(2);
+    this.obstacles = new SnakeGame.Collections.obstacles();
+  },
+
+  initTimers: function () {
+    var tick = this.tick.bind(this);
+    this.delay = 70;    // Start the game out slowish.
+    this.timers = {};   // Cache timer ids for later removal.
+    this.timers['main'] = window.setInterval(tick, this.delay);
+    this.resetAppleCountdown();
+  },
+
+  clearTimers: function () {
+    // Clear all timers.  We have to turn these off manually
+    // or the game view will never be garbage collected.
+    _.each(this.timers, function (timer) {
+      window.clearInterval(timer);
+      window.clearTimeout(timer);
+    });
+  },
+
+  resetAppleCountdown: function () {
+    // This periodically discards old apples and adds new ones if the
+    // player does not reach them quickly. This keeps the player 
+    // from making 100 attempts at a hard-to-reach pixel, and will move
+    // apples placed in impossible-to-reach places after a few seconds.
+    // Triggered each time an apple is eaten.
+
+    var game = this;
+    var resetDelay = 5000;
+
+    window.clearTimeout(game.timers['appleCountdown']);
+    game.timers['appleCountdown'] = window.setTimeout(
+      function () { 
+        game.apples.empty();
+        game.makeApples(2);
+        game.resetAppleCountdown();
+      }, resetDelay);
+  },
+  
+  speedUp: function () {
+    // We want to speed up, but not too much.
+    if (this.delay > 35) {
+      this.delay--;
+    }
+
+    var tick = this.tick.bind(this);
+    window.clearInterval(this.timers['main']);
+    this.timers['main'] = window.setInterval(tick, this.delay);
+    console.log('Speeding up to ' + 1000 / this.delay + 'fps');
+  },
+
   remove: function() {
     // Clear timers
-    _.each(this.gametimers, function (timer) {
-      window.clearInterval(timer);
-    });
+    this.clearTimers();
 
     // Unbind global key events
     this.off('keydown');
@@ -59,8 +113,7 @@ SnakeGame.Views.gameView = Backbone.View.extend({
     // jQuery will use a document fragment if you append a list of
     // items instead of doing them individually in the for-loop.
     this.$board.prepend(cellDivs.reverse());
-
-    var scoreView = new SnakeGame.Views.scoreView({model: this.score })
+    var scoreView = new SnakeGame.Views.scoreView({model: SnakeGame.gameState })
     this.$('.scoreview').html(scoreView.render().$el);
     return this;
   },
@@ -70,15 +123,15 @@ SnakeGame.Views.gameView = Backbone.View.extend({
     appleCount = (typeof numToMake === 'object') ? 1 : (numToMake || 1)
 
     for (var a = 0; a < appleCount; a++) {
-      // console.log("making one apple")
       this.apples.add(this.cells.sample());
     }
   },
 
-  KEY_MAPPINGS: { '38': 'N',
-                  '40': 'S',
-                  '37': 'W',
-                  '39': 'E' },
+  KEY_MAPPINGS: { 
+                  '38': 'N', '40': 'S', '37': 'W', '39': 'E', // arrow keys
+                  '75': 'N', '74': 'S', '72': 'W', '76': 'E', // vim hjkl
+                  '87': 'N', '83': 'S', '65': 'W', '68': 'E'  // wasd
+                },
 
   turnSnake: function (e) {
     var mappedKey = this.KEY_MAPPINGS[e.keyCode];
@@ -88,22 +141,27 @@ SnakeGame.Views.gameView = Backbone.View.extend({
   },
 
   gameOver: function () {
-    _.each(this.gametimers, function (timer) {
-      window.clearInterval(timer);
-    })
+    this.clearTimers();
+    SnakeGame.router.navigate("#highscores", {trigger: true});
   },
 
   updateScore: function () {
-    this.score.set({ 'score' : this.score.get('score') + 1 });
-    console.log('score updated:' + this.score.get('score'));
+    var currentScore = SnakeGame.gameState.get('score');
+    SnakeGame.gameState.set({ 'score' : currentScore + 1 });
   },
 
-  step: function () {
+  tick: function () {
+    // This is the main game loop action.  The snake's
+    // movement triggers a cascade of model events.
     this.snake.move();
+    // this.growObstacles();
   },
 
-  refreshApples: function () {
-    this.apples.empty();
-    this.makeApples(2);
+  addObstacles: function () {
+    // Make a few dead pixels, avoiding those squares that
+    // are immediately in front of the snake because 
+    // nobody likes insta-death.
+    this.obstacles.add(this.snake.notInDirectPath());
+    this.obstacles.add(this.snake.notInDirectPath());
   }
 });

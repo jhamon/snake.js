@@ -9,20 +9,21 @@ SnakeGame.Routers.snakeRouter = Backbone.Router.extend({
   },
 
   startGame: function () {
-
+    SnakeGame.gameState = new SnakeGame.Models.highScore();
     var gameView = new SnakeGame.Views.gameView();
+    console.log("Starting game.")
     this._swapView(gameView);
   },
 
   highScores: function () {
-    var highScoresPage = new SnakeGame.Views.highScoresPage();
-    this._swapView(gameView);
+    // var highScoresPage = new SnakeGame.Views.highScoresPage();
+    // this._swapView(highScoresPage);
+    // console.log("Showing scores.")
   },
 
   _swapView: function (newView) {
     this._currentView && this._currentView.remove();
     this._currentView = newView;
     this.$rootEl.html(newView.render().$el);
-    return this;
   }
 })
