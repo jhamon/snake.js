@@ -5,7 +5,7 @@ class HighScoresController < ApplicationController
   end
 
   def create
-    @high_score = HighScore.new(high_score_params)
+    @high_score = HighScore.create(high_score_params)
     render :json => @high_score
   end
 

@@ -1,25 +1,31 @@
-SnakeGame.Views.highScoreBoard = Backbone.View.extend({
-  template: JST['templates/scoreboard'],
+SnakeGame.Views.highScoreBoard = SnakeGame.Views.base.extend({
+  template: JST['scoreboard'],
 
-  scoreTemplate: JST['templates/scoreboard_item'],
+  scoreItemTemplate: JST['scoreboard_item'],
 
   initialize: function () {
     this.listenTo(this.collection, 'add', this.addOne);
   },
 
   render: function () {
-    var renderedContent = this.template()
-    this.$el.html(renderedContent);
+    this.$el.html(this.template());
 
-    this.collection.each( function (score) {
-      this.addOne(score);
-    });
+    var scoreDivs = this.collection.map( function (score) {
+      var scoreDate = new Date(score.get("created_at")); 
+      var scoreAge = this.timeSinceDate(scoreDate);
+      return this.scoreItemTemplate({'score': score, 'score_age': scoreAge});
+    }, this);
 
+    // Using the batch append here, again, to get that sweet
+    // document fragment performance.
+    this.$('table').append(scoreDivs);
     return this;
   },
 
   addOne: function (newScore) {
-    var renderedScore = this.scoreTemplate({score: newScore});
+    var scoreDate = new Date(); 
+    var scoreAge = this.timeSinceDate(scoreDate);
+    var renderedScore = this.scoreItemTemplate({score: newScore, score_age: scoreAge});
     this.$('.table').prepend(renderedScore);
     return this;
   }
