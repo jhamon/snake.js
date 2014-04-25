@@ -18,12 +18,14 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
     // Configure repeating tasks
     this.initTimers();
 
-    this.listenTo(this.apples, 'appleEaten', this.updateScore);
-    this.listenTo(this.apples, 'appleEaten', this.makeApples);
-    this.listenTo(this.apples, 'appleEaten', this.resetAppleCountdown);
-    this.listenTo(this.apples, 'appleEaten', this.speedUp);
-    this.listenTo(this.apples, 'appleEaten', this.addObstacles);
+    this.listenTo(this.apples, 'appleEaten', this.afterAppleEaten);
     this.listenTo(this.snake,  'collision',  this.gameOver);
+  },
+
+  afterAppleEaten: function () {
+    this.updateScore();
+    this.makeApples();
+    this.addObstacle();
   },
 
   initCollections: function () {
@@ -45,7 +47,7 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
     this.delay = 70;    // Start the game out slowish.
     this.timers = {};   // Cache timer ids for later removal.
     this.timers['main'] = window.setInterval(tick, this.delay);
-    this.resetAppleCountdown();
+    // this.resetAppleCountdown();
   },
 
   clearTimers: function () {
@@ -55,25 +57,6 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
       window.clearInterval(timer);
       window.clearTimeout(timer);
     });
-  },
-
-  resetAppleCountdown: function () {
-    // This periodically discards old apples and adds new ones if the
-    // player does not reach them quickly. This keeps the player 
-    // from making 100 attempts at a hard-to-reach pixel, and will move
-    // apples placed in impossible-to-reach places after a few seconds.
-    // Triggered each time an apple is eaten.
-
-    var game = this;
-    var resetDelay = 5000;
-
-    window.clearTimeout(game.timers['appleCountdown']);
-    game.timers['appleCountdown'] = window.setTimeout(
-      function () { 
-        game.apples.empty();
-        game.makeApples(2);
-        game.resetAppleCountdown();
-      }, resetDelay);
   },
   
   speedUp: function () {
@@ -157,11 +140,10 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
     // this.growObstacles();
   },
 
-  addObstacles: function () {
+  addObstacle: function () {
     // Make a few dead pixels, avoiding those squares that
     // are immediately in front of the snake because 
     // nobody likes insta-death.
-    this.obstacles.add(this.snake.notInDirectPath());
     this.obstacles.add(this.snake.notInDirectPath());
   }
 });
