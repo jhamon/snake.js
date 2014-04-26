@@ -1,5 +1,4 @@
 SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
-
   info: 'view:gameView',
 
   className: 'page',
@@ -19,6 +18,7 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
     this.initTimers();
 
     this.listenTo(this.apples, 'appleEaten', this.afterAppleEaten);
+    this.listenTo(this.apples, 'appleDestroyed', this.makeApples);
     this.listenTo(this.snake,  'collision',  this.gameOver);
   },
 
@@ -45,9 +45,9 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
   initTimers: function () {
     var tick = this.tick.bind(this);
     this.delay = 50;    // Start the game out slowish.
+    this.steps = 0;
     this.timers = {};   // Cache timer ids for later removal.
     this.timers['main'] = window.setInterval(tick, this.delay);
-    // this.resetAppleCountdown();
   },
 
   clearTimers: function () {
@@ -67,6 +67,7 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
     this.off('keydown');
 
     // Boilerplate ganked from backbone.js
+    this.$el.off();
     this.$el.remove();
     this.stopListening();
     return this;
@@ -125,8 +126,21 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
   tick: function () {
     // This is the main game loop action.  The snake's
     // movement triggers a cascade of model events.
+    this.steps += 1;
     this.snake.move();
-    // this.growObstacles();
+    this.growObstacles();
+  },
+
+  growObstacles: function () {
+    if (this.obstacles.length === 0 || this.steps % 20 !== 0) return;
+
+    var obstacle = _.sample(this.obstacles.models)
+    var growTo = this.cells.randomAdjacent(obstacle)
+
+    if (growTo.get('status') === 'apple') { 
+      growTo.trigger('appleDestroyed')
+    }
+    this.obstacles.add(growTo);
   },
 
   addObstacle: function () {

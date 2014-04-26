@@ -31,5 +31,23 @@ SnakeGame.Collections.cells = Backbone.Collection.extend({
     var cell = this.findWhere({'x': x, 'y': y});
     return (Object.prototype.toString.apply(cell) === '[object Object]') 
       ? cell : false;
+  },
+
+  randomAdjacent: function (cell) {
+    var direction = _.sample(['x', 'y'])
+    var delta = _.sample([1, -1]);
+
+    if (direction === 'x') {
+      var newX = cell.get(direction) + delta;
+      var Y = cell.get('y');
+      var adjCell = this.cellAtXY(newX, Y);
+    } else {
+      var newY = cell.get(direction) + delta;
+      var X = cell.get('x');
+      var adjCell = this.cellAtXY(X, newY);
+    }
+
+    return adjCell ? adjCell : this.randomAdjacent(cell);
   }
+
 })
