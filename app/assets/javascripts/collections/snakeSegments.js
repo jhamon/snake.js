@@ -70,16 +70,17 @@ SnakeGame.Collections.snakeSegments = Backbone.Collection.extend({
     return val;
   },
 
-  notInDirectPath: function () {
-    return this.head().notInDirectPath(this.moveVector());
-  },
-
   checkCollisions: function (next) {
     if (this.isCollidedWithWall(next) ||
         this.isCollidedWithSelf(next)) {
       this.trigger('collision');
-      console.log("snake says: collision!")
     }
+  },
+
+  distanceFrom: function (cell) {
+    var dx = cell.get("x") - this.get("x");
+    var dy = cell.get("y") - this.get("y");
+    return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
   },
 
   isCollidedWithSelf: function (next) {

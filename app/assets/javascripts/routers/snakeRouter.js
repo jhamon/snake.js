@@ -16,9 +16,9 @@ SnakeGame.Routers.snakeRouter = Backbone.Router.extend({
   },
 
   highScores: function () {
-    // var highScoresPage = new SnakeGame.Views.highScoresPage();
-    // this._swapView(highScoresPage);
-    // console.log("Showing scores.")
+    var highScoresPage = new SnakeGame.Views.highScoresPage();
+    this._swapView(highScoresPage);
+    console.log("Showing scores.")
   },
 
   _swapView: function (newView) {

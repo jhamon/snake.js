@@ -44,7 +44,7 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
 
   initTimers: function () {
     var tick = this.tick.bind(this);
-    this.delay = 70;    // Start the game out slowish.
+    this.delay = 50;    // Start the game out slowish.
     this.timers = {};   // Cache timer ids for later removal.
     this.timers['main'] = window.setInterval(tick, this.delay);
     // this.resetAppleCountdown();
@@ -57,18 +57,6 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
       window.clearInterval(timer);
       window.clearTimeout(timer);
     });
-  },
-  
-  speedUp: function () {
-    // We want to speed up, but not too much.
-    if (this.delay > 35) {
-      this.delay--;
-    }
-
-    var tick = this.tick.bind(this);
-    window.clearInterval(this.timers['main']);
-    this.timers['main'] = window.setInterval(tick, this.delay);
-    console.log('Speeding up to ' + 1000 / this.delay + 'fps');
   },
 
   remove: function() {
@@ -142,8 +130,14 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
 
   addObstacle: function () {
     // Make a few dead pixels, avoiding those squares that
-    // are immediately in front of the snake because 
-    // nobody likes insta-death.
-    this.obstacles.add(this.snake.notInDirectPath());
+    // are too close to the the snake because nobody likes
+    // insta-death.
+
+    var sampledCell = this.cells.sample();
+    if (this.snake.distanceFrom(sampledCell) < 10) {
+      this.addObstacle();
+    } else {
+      this.obstacles.add(sampledCell);
+    }
   }
 });
