@@ -77,10 +77,14 @@ SnakeGame.Collections.snakeSegments = Backbone.Collection.extend({
     }
   },
 
-  distanceFrom: function (cell) {
+  isTooCloseTo: function (cell) {
+    return this.squaredDistanceFrom(cell) < 100;
+  },
+
+  squaredDistanceFrom: function (cell) {
     var dx = cell.get("x") - this.get("x");
     var dy = cell.get("y") - this.get("y");
-    return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    return Math.pow(dx, 2) + Math.pow(dy, 2);
   },
 
   isCollidedWithSelf: function (next) {

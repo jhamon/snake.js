@@ -113,7 +113,8 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
 
   gameOver: function () {
     this.clearTimers();
-    SnakeGame.router.navigate("#highscores", {trigger: true});
+    setTimeout(function () { SnakeGame.router.navigate("#highscores", {trigger: true}); }, 500)
+
   },
 
   updateScore: function () {
@@ -134,7 +135,7 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
     // insta-death.
 
     var sampledCell = this.cells.sample();
-    if (this.snake.distanceFrom(sampledCell) < 10) {
+    if (this.snake.isTooCloseTo(sampledCell)) {
       this.addObstacle();
     } else {
       this.obstacles.add(sampledCell);
