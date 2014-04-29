@@ -114,8 +114,27 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
 
   gameOver: function () {
     this.clearTimers();
-    setTimeout(function () { SnakeGame.router.navigate("#highscores", {trigger: true}); }, 500)
+    this.endAnimation();
+  },
 
+  endAnimation: function () {
+    var redo = this.endAnimation.bind(this)
+
+    var empties = _.shuffle(this.cells.where({'status':'empty'}));
+    this.popAndWait(empties);
+  },
+
+  popAndWait: function (list) {
+    var game = this;
+    _.times(20, function () { game.obstacles.add(list.pop())})
+    var popWait = function () {
+      game.popAndWait(list);
+    }
+    if (list.length > 0) {
+      setTimeout(popWait, 1);
+    } else {
+      SnakeGame.router.navigate("#highscores", {trigger: true});
+    }
   },
 
   updateScore: function () {
@@ -132,27 +151,18 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
   },
 
   growObstacles: function () {
-    if (this.obstacles.length === 0 || this.steps % 20 !== 0) return;
-
-    var obstacle = _.sample(this.obstacles.models)
-    var growTo = this.cells.randomAdjacent(obstacle)
-
-    if (growTo.get('status') === 'apple') { 
-      growTo.trigger('appleDestroyed')
+    if (this.turnInToObstacle && this.stepsUntilMakeObstacle === 0) {
+      this.obstacles.add(this.turnInToObstacle);
+      this.turnInToObstacle = void 0;
     }
-    this.obstacles.add(growTo);
+
+    if (this.stepsUntilMakeObstacle) this.stepsUntilMakeObstacle--;
   },
 
   addObstacle: function () {
-    // Make a few dead pixels, avoiding those squares that
-    // are too close to the the snake because nobody likes
-    // insta-death.
-
-    var sampledCell = this.cells.sample();
-    if (this.snake.isTooCloseTo(sampledCell)) {
-      this.addObstacle();
-    } else {
-      this.obstacles.add(sampledCell);
-    }
+    // When we eat an apple, mark the snakes current tail position to 
+    // become an obstacle. 
+    this.turnInToObstacle = this.snake.tail();
+    this.stepsUntilMakeObstacle = 1;
   }
 });

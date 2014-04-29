@@ -65,6 +65,10 @@ SnakeGame.Collections.snakeSegments = Backbone.Collection.extend({
     return this.at(0);
   },
 
+  tail: function () {
+    return this.last();
+  },
+
   nextMove: function() {
     var val = this.head().plus(this.moveVector());
     return val;
@@ -75,16 +79,6 @@ SnakeGame.Collections.snakeSegments = Backbone.Collection.extend({
         this.isCollidedWithSelf(next)) {
       this.trigger('collision');
     }
-  },
-
-  isTooCloseTo: function (cell) {
-    return this.squaredDistanceFrom(cell) < 100;
-  },
-
-  squaredDistanceFrom: function (cell) {
-    var dx = cell.get("x") - this.get("x");
-    var dy = cell.get("y") - this.get("y");
-    return Math.pow(dx, 2) + Math.pow(dy, 2);
   },
 
   isCollidedWithSelf: function (next) {
