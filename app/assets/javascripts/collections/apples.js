@@ -21,6 +21,5 @@ SnakeGame.Collections.apples = SnakeGame.Collections.cells.extend({
       apple.set({'status':'empty'});
       this.remove(apple);
     }, this);
-    console.log(this.length)
   }
 })
