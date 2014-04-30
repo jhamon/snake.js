@@ -2,10 +2,10 @@ SnakeGame.Views.base = Backbone.View.extend({
   timeSinceDate: function (date) {
     var today = new Date();
     // Time diff in miliseconds
-    var milli = today - date | 0;
+    var milli = today - date;
 
     if (milli < 5000) {
-      return "a few moments ago";
+      return "just now";
     } else if (milli < 60000) {
       var secs = milli / 1000 | 0;
       return secs + " seconds ago";
