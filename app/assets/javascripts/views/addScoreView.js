@@ -7,7 +7,8 @@ SnakeGame.Views.addScoreView = Backbone.View.extend({
   },
 
   events: {
-    'click .save-score':'createScore'
+    'click .save-score':'createScore',
+    'submit':'createScore'
   },
 
   createScore: function (e) {

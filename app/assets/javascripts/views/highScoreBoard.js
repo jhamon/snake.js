@@ -25,8 +25,12 @@ SnakeGame.Views.highScoreBoard = SnakeGame.Views.base.extend({
   addOne: function (newScore) {
     var scoreDate = new Date(); 
     var scoreAge = this.timeSinceDate(scoreDate);
-    var renderedScore = this.scoreItemTemplate({score: newScore, score_age: scoreAge});
-    this.$('.table').prepend(renderedScore);
+    var $renderedScore = $(this.scoreItemTemplate({score: newScore, score_age: scoreAge}));
+
+    $renderedScore.addClass('new');
+    $renderedScore.hide();
+    this.$('.table tr:first-child').after($renderedScore);
+    $renderedScore.slideDown('slow');
     return this;
   }
 })

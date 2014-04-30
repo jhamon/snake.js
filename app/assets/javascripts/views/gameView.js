@@ -44,7 +44,7 @@ SnakeGame.Views.gameView = SnakeGame.Views.base.extend({
 
   initTimers: function () {
     var tick = this.tick.bind(this);
-    this.delay = 50;    // Start the game out slowish.
+    this.delay = 50;
     this.steps = 0;
     this.timers = {};   // Cache timer ids for later removal.
     this.timers['main'] = window.setInterval(tick, this.delay);
