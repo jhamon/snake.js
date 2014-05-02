@@ -2,4 +2,5 @@ tmp/*
 bower_components
 *.sqlite3
 *.log
+.DS_Store
 
