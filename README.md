@@ -1,4 +1,4 @@
-# <a href="http://www.serpento.io">Serpent.io</a>, a.k.a. Snake
+# <a href="http://www.serpento.io">Serpent.io</a>, a.k.a. Snake [![Code Climate](https://codeclimate.com/github/jhamon/snake.js.png)](https://codeclimate.com/github/jhamon/snake.js)
 
 ## Tech Inventory
 
