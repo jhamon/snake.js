@@ -1,18 +1,24 @@
-SnakeGame.Collections.obstacles = Backbone.Collection.extend({
-  info: 'collection:obstacles',
+(function () {
+  'use strict';
+  
+  var SnakeGame = window.SnakeGame = (window.SnakeGame || {});
 
-  model: SnakeGame.Models.cell,
+  SnakeGame.Collections.obstacles = Backbone.Collection.extend({
+    info: 'collection:obstacles',
 
-  initialize: function (models) {
-    this.listenTo(this, 'add', this.addStatus);
-    this.listenTo(this, 'remove', this.removeStatus);
-  },
+    model: SnakeGame.Models.cell,
 
-  addStatus: function (model) {
-    model.set({'status' : 'obstacle'});
-  },
+    initialize: function () {
+      this.listenTo(this, 'add', this.addStatus);
+      this.listenTo(this, 'remove', this.removeStatus);
+    },
 
-  removeStatus: function (model) {
-    model.set({'status' : 'empty'});
-  }
-})
+    addStatus: function (model) {
+      model.set({'status' : 'obstacle'});
+    },
+
+    removeStatus: function (model) {
+      model.set({'status' : 'empty'});
+    }
+  });
+})();

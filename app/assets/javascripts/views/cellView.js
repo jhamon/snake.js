@@ -1,20 +1,26 @@
-SnakeGame.Views.cellView = Backbone.View.extend({
-  className: 'cell',
+(function () {
+  'use strict';
 
-  tagName: 'div',
+  var SnakeGame = window.SnakeGame = (window.SnakeGame || {});
 
-  initialize: function () {
-    this.listenTo(this.model, 'change:status', this.swapClass)
-  },
+  SnakeGame.Views.cellView = Backbone.View.extend({
+    className: 'cell',
 
-  render: function () {
-    this.$el.addClass(this.model.get('status'));
-    return this;
-  },
+    tagName: 'div',
 
-  swapClass: function (model) {
-    var oldClass = model.previousAttributes().status;
-    this.$el.removeClass(oldClass);
-    this.$el.addClass(model.get('status'));
-  }
-})
+    initialize: function () {
+      this.listenTo(this.model, 'change:status', this.swapClass);
+    },
+
+    render: function () {
+      this.$el.addClass(this.model.get('status'));
+      return this;
+    },
+
+    swapClass: function (model) {
+      var oldClass = model.previousAttributes().status;
+      this.$el.removeClass(oldClass);
+      this.$el.addClass(model.get('status'));
+    }
+  });
+})();

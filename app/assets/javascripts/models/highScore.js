@@ -1,16 +1,23 @@
-SnakeGame.Models.highScore = Backbone.Model.extend({
-  info: 'model:highScore',
+(function () {
+  'use strict';
+  
+  var SnakeGame = window.SnakeGame = (window.SnakeGame || {});
 
-  urlRoot: '/high_scores',
+  SnakeGame.Models.highScore = Backbone.Model.extend({
+    info: 'model:highScore',
 
-  parse: function (data) {
-    this.set({"created_at": new Date(data.created_at)});
-    delete data.created_at;
-    return data;
-  },
+    urlRoot: '/high_scores',
 
-  defaults: {
-    username: "Anonymous",
-    score: 0
-  }
-})
+    parse: function (data) {
+      this.set({'created_at': new Date(data.created_at)});
+      delete data.created_at;
+      return data;
+    },
+
+    defaults: {
+      username: 'Anonymous',
+      score: 0
+    }
+  });  
+
+})();

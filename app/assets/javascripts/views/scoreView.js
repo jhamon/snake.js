@@ -1,14 +1,20 @@
-SnakeGame.Views.scoreView = Backbone.View.extend({
-  
-  initialize: function () {
-    this.listenTo(this.model, 'change', this.render);
-  },
+(function () {
+  'use strict';
 
-  template: JST['score_view'],
+  var SnakeGame = window.SnakeGame = (window.SnakeGame || {});
 
-  render: function () {
-    var rendered = this.template({ score: this.model });
-    this.$el.html(rendered);
-    return this;
-  }
-})
+  SnakeGame.Views.scoreView = Backbone.View.extend({
+    
+    initialize: function () {
+      this.listenTo(this.model, 'change', this.render);
+    },
+
+    template: JST.score_view,
+
+    render: function () {
+      var rendered = this.template({ score: this.model });
+      this.$el.html(rendered);
+      return this;
+    }
+  });
+})();
