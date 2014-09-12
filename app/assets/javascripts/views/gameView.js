@@ -112,6 +112,7 @@
     turnSnake: function (e) {
       var mappedKey = this.KEY_MAPPINGS[e.keyCode];
       if (mappedKey) {
+        e.preventDefault();
         this.snake.turn(mappedKey);
       }
     },
